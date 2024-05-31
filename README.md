@@ -1,0 +1,1 @@
+# qBittorrent-upload-reset
