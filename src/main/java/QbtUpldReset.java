@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -101,9 +102,26 @@ public class QbtUpldReset {
     }
 
     private static void resetUploadCount(File file, String encoding) {
-        // Logic to reset upload count goes here
-        // For demonstration purposes, we're just printing the file content
-        System.out.println("Resetting upload count for torrent: " + getTorrentName(file, encoding));
+        try {
+            // Read file content
+            String fileContent = readFileContent(file);
+
+            // Define pattern to find 'total_uploaded' value
+            Pattern pattern = Pattern.compile("14:total_uploadedi(\\d+)e");
+            Matcher matcher = pattern.matcher(fileContent);
+
+            // Replace the value of total_uploaded with 0 if found
+            if (matcher.find()) {
+                String newFileContent = matcher.replaceAll("14:total_uploadedi0e");
+                Files.write(file.toPath(), newFileContent.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+                System.out.println("Upload count reset for file: " + file.getName());
+            } else {
+                System.err.println("No total_uploaded field found in file: " + file.getName());
+            }
+        } catch (IOException e) {
+            System.err.println("Error processing file: " + file.getName());
+            e.printStackTrace();
+        }
     }
 
     private static String getTorrentName(File file, String encoding) {
