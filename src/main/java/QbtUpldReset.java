@@ -3,11 +3,15 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class QbtUpldReset {
+    private static List<String> successfulResets = new ArrayList<>();
+
     public static void main(String[] args) {
         String path = null;
         boolean singleFileMode = false;
@@ -59,6 +63,9 @@ public class QbtUpldReset {
             System.out.println("Using default path");
             processFiles(System.getenv("LocalAppData") + "\\qBittorrent\\BT_backup", singleFileMode, encoding);
         }
+
+        // Print the list of successfully updated torrents
+        printSuccessList();
     }
 
     private static void processFiles(String path, boolean singleFileMode, String encoding) {
@@ -74,7 +81,9 @@ public class QbtUpldReset {
                 }
                 if (reset) {
                     resetUploadCount(file, encoding);
-                    System.out.println("Upload count reset successfully for torrent: " + getTorrentName(file, encoding));
+                    String torrentName = getTorrentName(file, encoding);
+                    System.out.println("Upload count reset successfully for torrent: " + torrentName);
+                    successfulResets.add(torrentName);
                 } else {
                     System.out.println("Skipping file: " + file.getName());
                 }
@@ -138,6 +147,17 @@ public class QbtUpldReset {
             }
         } else {
             return "";
+        }
+    }
+
+    private static void printSuccessList() {
+        if (successfulResets.isEmpty()) {
+            System.out.println("No torrents were updated successfully.");
+        } else {
+            System.out.println("\nSuccessfully reset torrents:");
+            for (int i = 0; i < successfulResets.size(); i++) {
+                System.out.println((i + 1) + ". " + successfulResets.get(i));
+            }
         }
     }
 
