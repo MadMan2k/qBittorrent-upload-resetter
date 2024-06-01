@@ -10,6 +10,17 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * QbtUpldReset is a tool to reset the upload count for torrents in qBittorrent.
+ * It processes .fastresume files found in the BT_backup folder, resetting the
+ * total_uploaded value to 0.
+ *
+ * Command-line options:
+ *  -p, --path <path>   Specify the path to the BT_backup folder.
+ *  -s, --single        Prompt for confirmation before resetting the upload count for each file.
+ *  -e, --encoding      Specify the character encoding (default is Windows-1251).
+ *  -h, --help          Display this help message.
+ */
 public class QbtUpldReset {
     private static List<String> successfulResets = new ArrayList<>();
 
@@ -69,6 +80,13 @@ public class QbtUpldReset {
         printSuccessList();
     }
 
+    /**
+     * Processes the .fastresume files in the specified path, resetting the upload count for each file.
+     *
+     * @param path            The path to the BT_backup folder.
+     * @param singleFileMode  Whether to prompt for confirmation before resetting each file.
+     * @param encoding        The character encoding to use.
+     */
     private static void processFiles(String path, boolean singleFileMode, String encoding) {
         File folder = new File(path);
         File[] files = folder.listFiles((dir, name) -> name.endsWith(".fastresume"));
@@ -94,6 +112,13 @@ public class QbtUpldReset {
         }
     }
 
+    /**
+     * Prompts the user for confirmation before resetting the upload count for the specified file.
+     *
+     * @param file     The .fastresume file.
+     * @param encoding The character encoding to use.
+     * @return Whether the user confirmed the reset.
+     */
     private static boolean promptUserForReset(File file, String encoding) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Reset upload count for torrent: " + getTorrentName(file, encoding) + "? (y/n): ");
@@ -101,6 +126,12 @@ public class QbtUpldReset {
         return input.equals("yes") || input.equals("y");
     }
 
+    /**
+     * Resets the upload count for the specified .fastresume file by setting the total_uploaded value to 0.
+     *
+     * @param file     The .fastresume file.
+     * @param encoding The character encoding to use.
+     */
     private static void resetUploadCount(File file, String encoding) {
         try {
             // Read file content
@@ -124,6 +155,13 @@ public class QbtUpldReset {
         }
     }
 
+    /**
+     * Extracts the torrent name from the specified .fastresume file.
+     *
+     * @param file     The .fastresume file.
+     * @param encoding The character encoding to use.
+     * @return The torrent name, or "No torrent name found in file" if the name could not be extracted.
+     */
     private static String getTorrentName(File file, String encoding) {
         // Read the contents of the file
         String fileContent = readFileContent(file);
@@ -139,6 +177,12 @@ public class QbtUpldReset {
         }
     }
 
+    /**
+     * Reads the contents of the specified file and returns it as a string.
+     *
+     * @param file The file to read.
+     * @return The contents of the file as a string.
+     */
     private static String readFileContent(File file) {
         try {
             return new String(Files.readAllBytes(file.toPath()));
@@ -148,6 +192,13 @@ public class QbtUpldReset {
         }
     }
 
+    /**
+     * Extracts the torrent name from the file content using a regular expression.
+     *
+     * @param fileContent The content of the .fastresume file.
+     * @param encoding    The character encoding to use.
+     * @return The extracted torrent name, or an empty string if the name could not be extracted.
+     */
     private static String extractTorrentName(String fileContent, String encoding) {
         // Define the pattern to match the torrent name
         Pattern pattern = Pattern.compile("name=(.*?)ee11:upload_mode", Pattern.DOTALL);
@@ -168,6 +219,9 @@ public class QbtUpldReset {
         }
     }
 
+    /**
+     * Prints the list of torrents for which the upload count was successfully reset.
+     */
     private static void printSuccessList() {
         if (successfulResets.isEmpty()) {
             System.out.println("No torrents were updated successfully.");
@@ -179,6 +233,9 @@ public class QbtUpldReset {
         }
     }
 
+    /**
+     * Prints the help message, describing the usage and options of the application.
+     */
     private static void printHelp() {
         System.out.println("Usage: java QbtUpldReset [options]");
         System.out.println("Options:");
