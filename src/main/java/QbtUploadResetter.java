@@ -11,7 +11,7 @@ import java.nio.file.Files;
 import java.util.*;
 
 /**
- * QbtUploadCounterReset is a tool to reset the upload count for torrents in qBittorrent.
+ * QbtUploadResetter is a tool to reset the upload count for torrents in qBittorrent.
  * It processes .fastresume files found in the BT_backup folder, resetting the
  * total_uploaded value to 0.
  *
@@ -245,7 +245,7 @@ public class QbtUploadResetter {
      * Prints the help message.
      */
     private static void printHelp() {
-        System.out.println("Usage: java QbtUploadCounterReset [options]");
+        System.out.println("Usage: java QbtUploadResetter [options]");
         System.out.println("Options:");
         System.out.println("  -p, --path <path>   Specify the path to the BT_backup folder.");
         System.out.println("  -s, --single        Prompt for confirmation before resetting the upload count for each file.");

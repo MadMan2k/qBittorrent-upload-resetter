@@ -25,7 +25,7 @@ To compile the source code, follow these steps:
 3. Run the following command:
 
    ```sh
-   javac QbtUpldReset.java
+   javac QbtUpldResetter.java
 This will generate a QbtUpldReset.class file in the same directory
 
 ## Usage
