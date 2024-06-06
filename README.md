@@ -1,18 +1,26 @@
-# qBittorrent upload reset
+[![Java CI](https://github.com/MadMan2k/qBittorrent-upload-resetter/actions/workflows/main.yml/badge.svg)](https://github.com/MadMan2k/qBittorrent-upload-resetter/actions/workflows/main.yml)
 
-# QbtUpldReset
+# qBittorrent upload resetter
 
-QbtUpldReset is a simple Java application designed to reset the upload count in `.fastresume` files used by qBittorrent. This application does not require any external libraries or dependencies.
+qBittorrent upload resetter is a simple Java application designed to reset the upload value in `.fastresume` files used by qBittorrent.
 
 ## Features
 
-- Automatically detects and resets the upload count in `.fastresume` files.
+- Automatically detects and resets the upload value in `.fastresume` files.
 - Option to prompt for confirmation before resetting each file.
-- Supports specifying a custom character encoding.
 
 ## Prerequisites
 
 - Java Development Kit (JDK) 8 or higher.
+
+## Usage
+
+If you want to compile code by yourself, check Compilation part. If you want to use already compiled application - just [download](https://github.com/MadMan2k/qBittorrent-upload-reset/blob/main/LICENSE) latest jar file and run following comand from your terminal(Mac/Linux) or command line(Windows)
+
+To run the application, use the following command:
+```sh
+java QbtUpldReset [options]
+```
 
 ## Compilation
 
@@ -27,13 +35,6 @@ To compile the source code, follow these steps:
    ```sh
    javac QbtUpldResetter.java
 This will generate a QbtUpldReset.class file in the same directory
-
-## Usage
-
-To run the application, use the following command:
-```sh
-java QbtUpldReset [options]
-```
 
 ## Options
 
