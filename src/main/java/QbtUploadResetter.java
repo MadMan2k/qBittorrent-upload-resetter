@@ -24,9 +24,9 @@ public class QbtUploadResetter {
     private static final String TORRENT_FILE_EXTENSION = ".torrent";
     private static final String FASTRESUME_FILE_EXTENSION = ".fastresume";
 
-    private static final String HEX_FIRST_ARGUMENT = "31343A746F74616C5F75706C6F6164656469"; // "14:total_uploadedi" in hexadecimal
-    private static final String HEX_SECOND_ARGUMENT = "65383A747261636B657273"; // "e8:trackers" in hexadecimal
-    private static final String HEX_ZERO = "30";
+    public static final String HEX_FIRST_ARGUMENT = "31343A746F74616C5F75706C6F6164656469"; // "14:total_uploadedi" in hexadecimal
+    public static final String HEX_SECOND_ARGUMENT = "65383A747261636B657273"; // "e8:trackers" in hexadecimal
+    public static final String HEX_ZERO = "30";
     private static List<String> successfulResets = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -120,7 +120,7 @@ public class QbtUploadResetter {
      * @param resetHexData The modified hex data.
      * @param path         The file path to save the data.
      */
-    private static void saveFileWithResetData(String resetHexData, String path) {
+    public static void saveFileWithResetData(String resetHexData, String path) {
         byte[] bytes = DatatypeConverter.parseHexBinary(resetHexData);
         try (FileOutputStream fos = new FileOutputStream(path)) {
             fos.write(bytes);
@@ -154,7 +154,7 @@ public class QbtUploadResetter {
      * @param fastresumeFilePath The path of the .fastresume file.
      * @return true if the user confirms, false otherwise.
      */
-    private static boolean promptUserForReset(String fastresumeFilePath) {
+    public static boolean promptUserForReset(String fastresumeFilePath) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Reset upload value for torrent: " + getTorrentName(fastresumeFilePath) + "? (y/n): ");
         String input = scanner.nextLine().trim().toLowerCase();
@@ -167,7 +167,7 @@ public class QbtUploadResetter {
      * @param hexData The original hex data.
      * @return The modified hex data with the upload value reset.
      */
-    private static String resetUploadValue(String hexData) {
+    public static String resetUploadValue(String hexData) {
         int startFirstArgument = hexData.indexOf(HEX_FIRST_ARGUMENT);
         int startSecondArgument = hexData.indexOf(HEX_SECOND_ARGUMENT);
 
@@ -187,7 +187,7 @@ public class QbtUploadResetter {
      * @param file The .torrent file.
      * @return A map containing the decoded data.
      */
-    private static Map<String, Object> decodeTorrentFile(File file) {
+    public static Map<String, Object> decodeTorrentFile(File file) {
         byte[] fileContent = readFileToByteArray(file);
         Bencode bencode = new Bencode();
         try {
@@ -205,7 +205,7 @@ public class QbtUploadResetter {
      * @param file The file to read.
      * @return The file content as a byte array.
      */
-    private static byte[] readFileToByteArray(File file) {
+    public static byte[] readFileToByteArray(File file) {
         try {
             return Files.readAllBytes(file.toPath());
         } catch (IOException e) {
@@ -221,7 +221,7 @@ public class QbtUploadResetter {
      * @param fastresumeFilePath The path to the .fastresume file.
      * @return The torrent name, or a default message if not found.
      */
-    private static String getTorrentName(String fastresumeFilePath) {
+    public static String getTorrentName(String fastresumeFilePath) {
         String torrentFilePath = fastresumeFilePath.replace(FASTRESUME_FILE_EXTENSION, TORRENT_FILE_EXTENSION);
         File torrentFile = new File(torrentFilePath);
 
