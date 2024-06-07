@@ -1,4 +1,5 @@
 [![Java CI](https://github.com/MadMan2k/qBittorrent-upload-resetter/actions/workflows/main.yml/badge.svg)](https://github.com/MadMan2k/qBittorrent-upload-resetter/actions/workflows/main.yml)
+[![codecov](https://codecov.io/gh/MadMan2k/qBittorrent-upload-resetter/graph/badge.svg?token=Y1P3K94KJZ)](https://codecov.io/gh/MadMan2k/qBittorrent-upload-resetter)
 
 # qBittorrent upload resetter
 
