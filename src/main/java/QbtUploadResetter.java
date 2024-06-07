@@ -24,8 +24,8 @@ public class QbtUploadResetter {
     private static final String TORRENT_FILE_EXTENSION = ".torrent";
     private static final String FASTRESUME_FILE_EXTENSION = ".fastresume";
 
-    private static final String HEX_FIRST_ARGUMENT = "31343A746F74616C5F75706C6F6164656469";
-    private static final String HEX_SECOND_ARGUMENT = "65383A747261636B657273";
+    private static final String HEX_FIRST_ARGUMENT = "31343A746F74616C5F75706C6F6164656469"; // "14:total_uploadedi" in hexadecimal
+    private static final String HEX_SECOND_ARGUMENT = "65383A747261636B657273"; // "e8:trackers" in hexadecimal
     private static final String HEX_ZERO = "30";
     private static List<String> successfulResets = new ArrayList<>();
 
@@ -91,7 +91,7 @@ public class QbtUploadResetter {
 
         if (files != null && files.length > 0) {
             for (File file : files) {
-                String hexData = decodeHexData(file);
+                String hexData = encodeHexData(file);
                 if (!hexData.isEmpty()) {
                     System.out.println("Processing file: " + file.getName());
                     boolean reset = true;
@@ -131,12 +131,12 @@ public class QbtUploadResetter {
     }
 
     /**
-     * Reads and decodes hex data from a file.
+     * Reads and encodes hex data from a file.
      *
      * @param file The file to read from.
      * @return The hex data as a string.
      */
-    private static String decodeHexData(File file) {
+    public static String encodeHexData(File file) {
         try (FileInputStream fis = new FileInputStream(file)) {
             byte[] data = new byte[fis.available()];
             fis.read(data);
