@@ -27,7 +27,7 @@ public class QbtUploadResetter {
     public static final String HEX_FIRST_ARGUMENT = "31343A746F74616C5F75706C6F6164656469"; // "14:total_uploadedi" in hexadecimal
     public static final String HEX_SECOND_ARGUMENT = "65383A747261636B657273"; // "e8:trackers" in hexadecimal
     public static final String HEX_ZERO = "30";
-    private static List<String> successfulResets = new ArrayList<>();
+    public static List<String> successfulResets = new ArrayList<>();
 
     public static void main(String[] args) {
         String path = null;
@@ -80,7 +80,7 @@ public class QbtUploadResetter {
      * @param path            The path to the BT_backup folder.
      * @param singleFileMode  Whether to prompt for confirmation before resetting each file.
      */
-    private static void processFiles(String path, boolean singleFileMode) {
+    public static void processFiles(String path, boolean singleFileMode) {
         File folder = new File(path);
         if (!folder.exists() || !folder.isDirectory()) {
             System.err.println("Invalid path specified or path is not a directory.");
@@ -98,14 +98,14 @@ public class QbtUploadResetter {
                     if (singleFileMode) {
                         reset = promptUserForReset(file.getPath());
                     }
+                    String torrentName = getTorrentName(file.getPath());
                     if (reset) {
                         String resetHexData = resetUploadValue(hexData);
                         saveFileWithResetData(resetHexData, file.getPath());
-                        String torrentName = getTorrentName(file.getPath());
                         System.out.println("Upload value reset successfully for torrent: " + torrentName);
                         successfulResets.add(torrentName);
                     } else {
-                        System.out.println("Skipping file: " + file.getName());
+                        System.out.println("Skipping torrent: " + torrentName);
                     }
                 }
             }
@@ -158,7 +158,7 @@ public class QbtUploadResetter {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Reset upload value for torrent: " + getTorrentName(fastresumeFilePath) + "? (y/n): ");
         String input = scanner.nextLine().trim().toLowerCase();
-        return input.equals("yes") || input.equals("y");
+        return input.equalsIgnoreCase("yes") || input.equalsIgnoreCase("y");
     }
 
     /**

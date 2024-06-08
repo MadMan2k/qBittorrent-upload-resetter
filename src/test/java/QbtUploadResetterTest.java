@@ -2,6 +2,8 @@ import com.dampcake.bencode.Bencode;
 import com.dampcake.bencode.BencodeException;
 import com.dampcake.bencode.Type;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mockStatic;
@@ -9,9 +11,7 @@ import static org.mockito.Mockito.*;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 
 import org.junit.jupiter.api.io.TempDir;
@@ -24,28 +24,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public class QbtUploadResetterTest {
-    private static final String HEX_FIRST_ARGUMENT = "first";
-    private static final String HEX_SECOND_ARGUMENT = "second";
-    private static final String HEX_ZERO = "0";
-
-//    @Test
-//    void encodeHexData_shouldEncodeHexDataCorrectly() {
-//        // Test encoding in hex
-//        String hexData = "48656C6C6F20576F726C64"; // "Hello World" in hexadecimal
-//
-//        // Load the file from resources
-//        File fileHelloWorld = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("HelloWorld.txt")).getFile());
-//
-//        String decodedData = QbtUploadResetter.encodeHexData(fileHelloWorld);
-//        assertEquals(hexData, decodedData);
-//
-//        // Test encoding empty file
-//        String emptyData = "";
-//        File fileEmpty = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("Empty.txt")).getFile());
-//        String emptyDecodedData = QbtUploadResetter.encodeHexData(fileEmpty);
-//        assertEquals(emptyData, emptyDecodedData);
-//    }
-
     @TempDir
     Path tempDir;
 
@@ -98,28 +76,6 @@ public class QbtUploadResetterTest {
         assertEquals(expectedHex, result);
     }
 
-//    @Test
-//    void saveFileWithResetData_shouldSaveFileWithModifiedData() throws IOException {
-//        // Create a temporary file with sample data
-//        File tempFile = Files.createTempFile("temp", ".txt").toFile();
-//        String originalData = "Original data";
-//        Files.write(tempFile.toPath(), originalData.getBytes());
-//
-//        // Reset the upload value in the hex data and save it to the temporary file
-//        String resetHexData = "48656C6C6F20576F726C64"; // "Hello World" in hexadecimal
-//        QbtUploadResetter.saveFileWithResetData(resetHexData, tempFile.getPath());
-//
-//        // Read the content of the temporary file
-//        byte[] fileContent = Files.readAllBytes(tempFile.toPath());
-//        String savedData = new String(fileContent);
-//
-//        // Verify that the file content matches the modified data
-//        assertEquals("Hello World", savedData);
-//
-//        // Clean up: delete the temporary file
-//        tempFile.delete();
-//    }
-
     @Test
     public void testSaveFileWithResetData() throws IOException {
         // Prepare test data
@@ -170,14 +126,6 @@ public class QbtUploadResetterTest {
         assertTrue(errorOutput.contains("Failed to save the file: " + invalidPath));
     }
 
-//    @Test
-//    void resetUploadValue_shouldResetUploadValueInHexData() {
-//        // Test resetting upload value in hex data
-//        String originalHexData = "31343A746F74616C5F75706C6F616465646965383A747261636B657273";
-//        String modifiedHexData = QbtUploadResetter.resetUploadValue(originalHexData);
-//        assertEquals("31343A746F74616C5F75706C6F61646564693065383A747261636B657273", modifiedHexData);
-//    }
-
     @Test
     void resetUploadValue_BothArgumentsPresent() {
         String hexData = "somePrefix" + QbtUploadResetter.HEX_FIRST_ARGUMENT + "middlePart" + QbtUploadResetter.HEX_SECOND_ARGUMENT + "someSuffix";
@@ -197,8 +145,6 @@ public class QbtUploadResetterTest {
         assertThrows(IllegalArgumentException.class, () -> QbtUploadResetter.resetUploadValue(hexData));
     }
 
-
-
     @Test
     void resetUploadValue_SecondArgumentBeforeFirst() {
         String hexData = "somePrefix" + QbtUploadResetter.HEX_SECOND_ARGUMENT + "middlePart" + QbtUploadResetter.HEX_FIRST_ARGUMENT + "someSuffix";
@@ -210,21 +156,6 @@ public class QbtUploadResetterTest {
         String hexData = "";
         assertThrows(IllegalArgumentException.class, () -> QbtUploadResetter.resetUploadValue(hexData));
     }
-
-//    @Test
-//    void promptUserForReset_shouldPromptUserAndReturnBoolean() {
-//        // Test user confirmation
-//        ByteArrayInputStream in = new ByteArrayInputStream("yes".getBytes());
-//        System.setIn(in);
-//        assertTrue(QbtUploadResetter.promptUserForReset("test-file-path"));
-//        System.setIn(System.in);
-//
-//        // Test user cancellation
-//        ByteArrayInputStream cancelIn = new ByteArrayInputStream("no".getBytes());
-//        System.setIn(cancelIn);
-//        assertFalse(QbtUploadResetter.promptUserForReset("test-file-path"));
-//        System.setIn(System.in);
-//    }
 
     @Test
     void promptUserForReset_YesInput() {
@@ -306,19 +237,6 @@ public class QbtUploadResetterTest {
         testFile.delete();
     }
 
-//    @Test
-//    void getTorrentName_shouldExtractTorrentNameFromFilePath() {
-//        // Test with valid .fastresume file path
-//        String validFastresumeFilePath = "sample.fastresume";
-//        String torrentName = QbtUploadResetter.getTorrentName(validFastresumeFilePath);
-//        assertEquals("sample", torrentName);
-//
-//        // Test with invalid .fastresume file path
-//        String invalidFastresumeFilePath = "invalid.fastresume";
-//        String defaultName = QbtUploadResetter.getTorrentName(invalidFastresumeFilePath);
-//        assertEquals("Unknown Torrent", defaultName);
-//    }
-
     @Test
     void getTorrentName_ValidFile_ReturnsName() {
         // Create a mock fastresume file path
@@ -376,33 +294,127 @@ public class QbtUploadResetterTest {
         assertEquals(expectedTorrentName, actualTorrentName);
     }
 
-//    @Test
-//    void processFiles_shouldProcessFilesCorrectly() {
-//        // Test processing files with valid data
-//        // Create temporary directory with sample .fastresume files
-//        File tempDir = Files.createTempDirectory("temp-dir").toFile();
-//        File validFile1 = new File(tempDir, "valid1.fastresume");
-//        File validFile2 = new File(tempDir, "valid2.fastresume");
-//        try {
-//            validFile1.createNewFile();
-//            validFile2.createNewFile();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        // Test with valid files and single file mode disabled
-//        QbtUploadResetter.processFiles(tempDir.getPath(), false);
-//
-//        // Test with valid files and single file mode enabled
-//        QbtUploadResetter.processFiles(tempDir.getPath(), true);
-//
-//        // Clean up: delete temporary directory and files
-//        deleteDirectory(tempDir);
-//
-//        // Test processing files with invalid data
-//        // TODO: Implement this test
-//    }
-//
+    @Test
+    void testFilesFoundSingleFileModeDisabled() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Assuming encodeHexData, resetUploadValue, saveFileWithResetData, and getTorrentName
+        // are correctly implemented in FileProcessor
+
+        QbtUploadResetter.processFiles("src/test/resources/testDir", false);
+
+        String output = outContent.toString();
+        assertTrue(output.contains("Processing file: bunny1.fastresume"));
+        assertTrue(output.contains("Upload value reset successfully for torrent: bbb_sunflower_1080p_30fps_stereo_abl.mp4"));
+        final PrintStream originalOut = System.out;
+        System.setOut(originalOut);
+    }
+
+    @Test
+    void testFilesFoundSingleFileModeEnabledWithDifferentUserInputs() {
+        String input1 = "n";
+        ByteArrayInputStream inContent = new ByteArrayInputStream(input1.getBytes());
+        System.setIn(inContent);
+
+        PrintStream originalOut = System.out;
+        final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Assuming encodeHexData, resetUploadValue, saveFileWithResetData, and getTorrentName
+        // are correctly implemented in FileProcessor
+
+        inContent = new ByteArrayInputStream("n".getBytes());
+        System.setIn(inContent);
+
+        QbtUploadResetter.processFiles("src/test/resources/testDir", true);
+
+        String output = outContent.toString();
+        assertTrue(output.contains("Processing file: bunny1.fastresume"));
+        assertTrue(output.contains("Skipping torrent: bbb_sunflower_1080p_30fps_stereo_abl.mp4"));
+
+        System.setOut(originalOut);
+    }
+
+
+    @Test
+    void processFiles_InvalidPath_PrintsErrorMessage() {
+        // Redirect System.err to capture printed error message
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(outputStreamCaptor));
+
+        // Provide an invalid path
+        String invalidPath = "invalid/path";
+
+        // Call the method under test
+        QbtUploadResetter.processFiles(invalidPath, false);
+
+        // Assert that the error message is printed
+        String expectedErrorMessage = "Invalid path specified or path is not a directory.";
+        assertEquals(expectedErrorMessage, outputStreamCaptor.toString().trim());
+
+        // Reset System.err
+        System.setErr(System.err);
+    }
+
+    @Test
+    void processFiles_NoFastresumeFiles_PrintsNoFilesFoundMessage() {
+        // Redirect System.out to capture printed message
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStreamCaptor));
+
+        // Create a temporary directory for testing
+        File tempDir = new File(System.getProperty("java.io.tmpdir"), "tempDir");
+        tempDir.mkdir();
+
+        // Call the method under test
+        QbtUploadResetter.processFiles(tempDir.getAbsolutePath(), false);
+
+        // Assert that the message indicating no .fastresume files is printed
+        String expectedMessage = "No .fastresume files found in the specified path";
+        assertEquals(expectedMessage, outputStreamCaptor.toString().trim());
+
+        // Reset System.out
+        System.setOut(System.out);
+
+        // Clean up: delete the temporary directory
+        tempDir.delete();
+    }
+
+    @Test
+    void processFiles_WithFastresumeFiles_ProcessesFiles() {
+        // Redirect System.out to capture printed message
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStreamCaptor));
+
+        // Create a temporary directory for testing
+        File tempDir = new File(System.getProperty("java.io.tmpdir"), "tempDir");
+        tempDir.mkdir();
+
+        // Create a sample .fastresume file
+        File fastresumeFile = new File(tempDir, "sample.fastresume");
+        try {
+            fastresumeFile.createNewFile();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Call the method under test
+        QbtUploadResetter.processFiles(tempDir.getAbsolutePath(), false);
+
+        // Print the captured output for debugging
+        System.out.println(outputStreamCaptor.toString());
+
+        // Reset System.out
+        System.setOut(System.out);
+
+        // Clean up: delete the temporary directory
+        fastresumeFile.delete();
+        tempDir.delete();
+    }
+
+
+
     // Utility method to recursively delete a directory
     private void deleteDirectory(File directory) {
         if (directory.exists()) {
