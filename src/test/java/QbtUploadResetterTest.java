@@ -211,7 +211,7 @@ public class QbtUploadResetterTest {
     @Test
     void decodeTorrentFile_ValidFile_ReturnsMap() {
         // Load the test torrent file from resources
-        File testFile = new File(getClass().getResource("/bunny.torrent").getFile());
+        File testFile = new File(getClass().getResource("/testDir/bunny.torrent").getFile());
         try {
             // Call the method under test
             Map<String, Object> result = QbtUploadResetter.decodeTorrentFile(testFile);
@@ -240,7 +240,7 @@ public class QbtUploadResetterTest {
     @Test
     void getTorrentName_ValidFile_ReturnsName() {
         // Create a mock fastresume file path
-        String fastresumeFilePath = "src/test/resources/bunny.fastresume";
+        String fastresumeFilePath = "src/test/resources/testDir/bunny.fastresume";
 
         // Call the method under test
         String torrentName = QbtUploadResetter.getTorrentName(fastresumeFilePath);
@@ -305,7 +305,7 @@ public class QbtUploadResetterTest {
         QbtUploadResetter.processFiles("src/test/resources/testDir", false);
 
         String output = outContent.toString();
-        assertTrue(output.contains("Processing file: bunny1.fastresume"));
+        assertTrue(output.contains("Processing file: bunny.fastresume"));
         assertTrue(output.contains("Upload value reset successfully for torrent: bbb_sunflower_1080p_30fps_stereo_abl.mp4"));
         final PrintStream originalOut = System.out;
         System.setOut(originalOut);
@@ -330,7 +330,7 @@ public class QbtUploadResetterTest {
         QbtUploadResetter.processFiles("src/test/resources/testDir", true);
 
         String output = outContent.toString();
-        assertTrue(output.contains("Processing file: bunny1.fastresume"));
+        assertTrue(output.contains("Processing file: bunny.fastresume"));
         assertTrue(output.contains("Skipping torrent: bbb_sunflower_1080p_30fps_stereo_abl.mp4"));
 
         System.setOut(originalOut);
