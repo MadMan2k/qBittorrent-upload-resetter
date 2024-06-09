@@ -83,11 +83,14 @@ public class QbtUploadResetter {
     public static void processFiles(String path, boolean singleFileMode) {
         File folder = new File(path);
         if (!folder.exists() || !folder.isDirectory()) {
+            System.out.println("folder.exists() = " + folder.exists());
+            System.out.println("folder.isDirectory() = " + folder.isDirectory());
             System.err.println("Invalid path specified or path is not a directory.");
             return;
         }
 
         File[] files = folder.listFiles((dir, name) -> name.endsWith(FASTRESUME_FILE_EXTENSION));
+
 
         if (files != null && files.length > 0) {
             for (File file : files) {

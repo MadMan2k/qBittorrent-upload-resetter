@@ -312,7 +312,7 @@ public class QbtUploadResetterTest {
     }
 
     @Test
-    void testFilesFoundSingleFileModeEnabledWithDifferentUserInputs() {
+    void testFilesFoundSingleFileModeEnabledWithSkipping() {
         String input1 = "n";
         ByteArrayInputStream inContent = new ByteArrayInputStream(input1.getBytes());
         System.setIn(inContent);
@@ -358,7 +358,57 @@ public class QbtUploadResetterTest {
     }
 
     @Test
-    void processFiles_NoFastresumeFiles_PrintsNoFilesFoundMessage() {
+    void processFiles_NotADirectory() {
+        // Redirect System.err to capture printed error message
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(outputStreamCaptor));
+
+        // Provide an invalid path
+        String invalidPath = "src/test/resources/invalid.torrent";
+
+        // Call the method under test
+        QbtUploadResetter.processFiles(invalidPath, false);
+
+        // Assert that the error message is printed
+        String expectedErrorMessage = "Invalid path specified or path is not a directory.";
+        assertEquals(expectedErrorMessage, outputStreamCaptor.toString().trim());
+
+        // Reset System.err
+        System.setErr(System.err);
+    }
+
+//    @Test
+//    void processFiles_NoFastresumeFiles_PrintsNoFilesFoundMessage() throws IOException {
+//        // Redirect System.out to capture printed message
+//        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+//        System.setOut(new PrintStream(outputStreamCaptor));
+//
+//        // Create a temporary directory for testing
+//        File tempDir = new File(System.getProperty("java.io.tmpdir"), "tempDir");
+//        if (!tempDir.mkdir()) {
+//            throw new IOException("Failed to create temporary directory");
+//        }
+//
+//        try {
+//            // Call the method under test
+//            QbtUploadResetter.processFiles(tempDir.getAbsolutePath(), false);
+//
+//            // Assert that the message indicating no .fastresume files is printed
+//            String expectedMessage = "No .fastresume files found in the specified path";
+//            assertEquals(expectedMessage, outputStreamCaptor.toString().trim());
+//        } finally {
+//            // Reset System.out
+//            System.setOut(System.out);
+//
+//            // Clean up: delete the temporary directory
+//            if (!tempDir.delete()) {
+//                throw new IOException("Failed to delete temporary directory");
+//            }
+//        }
+//    }
+
+    @Test
+    void processFiles_NoFastresumeFilesInNonEmptyDir_PrintsNoFilesFoundMessage() throws IOException {
         // Redirect System.out to capture printed message
         ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStreamCaptor));
@@ -366,6 +416,10 @@ public class QbtUploadResetterTest {
         // Create a temporary directory for testing
         File tempDir = new File(System.getProperty("java.io.tmpdir"), "tempDir");
         tempDir.mkdir();
+
+        // Create a temporary file that does not have .fastresume extension in the directory
+        File tempFile = new File(tempDir, "test.txt");
+        tempFile.createNewFile();
 
         // Call the method under test
         QbtUploadResetter.processFiles(tempDir.getAbsolutePath(), false);
@@ -377,7 +431,8 @@ public class QbtUploadResetterTest {
         // Reset System.out
         System.setOut(System.out);
 
-        // Clean up: delete the temporary directory
+        // Clean up: delete the temporary file and directory
+        tempFile.delete();
         tempDir.delete();
     }
 
