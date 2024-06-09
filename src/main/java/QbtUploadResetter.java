@@ -50,6 +50,7 @@ public class QbtUploadResetter {
                 case "-s":
                 case "--single":
                     singleFileMode = true;
+                    System.out.println("Using single file mode");
                     break;
                 case "-h":
                 case "--help":
@@ -90,7 +91,6 @@ public class QbtUploadResetter {
         }
 
         File[] files = folder.listFiles((dir, name) -> name.endsWith(FASTRESUME_FILE_EXTENSION));
-
 
         if (files != null && files.length > 0) {
             for (File file : files) {

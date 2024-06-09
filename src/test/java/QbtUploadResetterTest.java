@@ -27,6 +27,130 @@ public class QbtUploadResetterTest {
     @TempDir
     Path tempDir;
 
+
+
+
+
+    @Test
+    void testMainWithPathArgument() {
+        // Redirect System.out to capture output
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Execute main method with path argument
+        String[] args = {"--path", "test_path"};
+        QbtUploadResetter.main(args);
+
+        // Check if the output contains the expected message
+        assertTrue(outContent.toString().contains("Path specified: test_path"));
+
+        // Restore System.out
+        System.setOut(System.out);
+    }
+
+    @Test
+    void testMainWithPathArgumentMissedValue() {
+        // Redirect System.out to capture output
+        ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(errContent));
+
+        // Execute main method with path argument
+        String[] args = {"--path"};
+        QbtUploadResetter.main(args);
+
+        // Check if the output contains the expected message
+        assertTrue(errContent.toString().contains("Missing value for -p/--path option"));
+
+        // Restore System.out
+        System.setOut(System.out);
+    }
+
+
+
+    @Test
+    void testMainWithSingleArgument() {
+        // Redirect System.out to capture output
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Execute main method with single argument
+        String[] args = {"--single"};
+        QbtUploadResetter.main(args);
+
+        // Restore System.out
+        System.setOut(System.out);
+
+        // Check if the output contains the expected message
+        assertTrue(outContent.toString().contains("Using single file mode"));
+
+    }
+
+
+
+
+
+
+    @Test
+    void testMainWithoutArguments() {
+        // Redirect System.out to capture output
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Execute main method without arguments
+        String[] args = {};
+        QbtUploadResetter.main(args);
+
+        // Check if the output contains the expected message
+        assertTrue(outContent.toString().contains("Using default path"));
+
+        // Restore System.out
+        System.setOut(System.out);
+    }
+
+    @Test
+    void testMainWithHelpArgument() {
+        // Redirect System.out to capture output
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Execute main method with help argument
+        String[] args = {"--help"};
+        QbtUploadResetter.main(args);
+
+        // Check if the output contains the expected message
+        assertTrue(outContent.toString().contains("Usage: java QbtUploadResetter"));
+
+        // Restore System.out
+        System.setOut(System.out);
+    }
+
+    @Test
+    void testMainWithUnknownArgument() {
+        // Redirect System.out to capture output
+        ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(errContent));
+
+        // Execute main method with unknown argument
+        String[] args = {"--unknown"};
+        QbtUploadResetter.main(args);
+
+        // Check if the output contains the expected message
+        assertTrue(errContent.toString().contains("Unknown option: --unknown"));
+
+        // Restore System.out
+        System.setOut(System.out);
+    }
+
+
+
+
+
+
+
+
+
+
+
     @Test
     public void testEncodeHexData() throws IOException {
         File tempFile = tempDir.resolve("testfile.txt").toFile();
