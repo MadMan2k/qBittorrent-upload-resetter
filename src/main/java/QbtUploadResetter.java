@@ -1,14 +1,16 @@
 import com.dampcake.bencode.Bencode;
 import com.dampcake.bencode.BencodeException;
 import com.dampcake.bencode.Type;
-
 import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 /**
  * QbtUploadResetter is a tool to reset the upload value for torrents in qBittorrent.
@@ -23,13 +25,16 @@ import java.util.*;
 public class QbtUploadResetter {
     private static final String TORRENT_FILE_EXTENSION = ".torrent";
     private static final String FASTRESUME_FILE_EXTENSION = ".fastresume";
-
-    public static final String HEX_FIRST_ARGUMENT = "31343A746F74616C5F75706C6F6164656469"; // "14:total_uploadedi" in hexadecimal
-    public static final String HEX_SECOND_ARGUMENT = "65383A747261636B657273"; // "e8:trackers" in hexadecimal
-    public static final String HEX_ZERO = "30";
     private static final String DEFAULT_PATH = System.getenv("LocalAppData") + "\\qBittorrent\\BT_backup";
     private static final String YES = "yes";
     private static final String Y = "y";
+
+    // "14:total_uploadedi" in hexadecimal
+    public static final String HEX_FIRST_ARGUMENT = "31343A746F74616C5F75706C6F6164656469";
+    // "e8:trackers" in hexadecimal
+    public static final String HEX_SECOND_ARGUMENT = "65383A747261636B657273";
+    public static final String HEX_ZERO = "30";
+
     public static List<String> successfulResets = new ArrayList<>();
 
     public static void main(String[] args) {
