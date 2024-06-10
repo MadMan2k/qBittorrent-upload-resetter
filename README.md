@@ -1,11 +1,11 @@
 [![Java CI](https://github.com/MadMan2k/qBittorrent-upload-resetter/actions/workflows/main.yml/badge.svg)](https://github.com/MadMan2k/qBittorrent-upload-resetter/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/MadMan2k/qBittorrent-upload-resetter/graph/badge.svg?token=Y1P3K94KJZ)](https://codecov.io/gh/MadMan2k/qBittorrent-upload-resetter)
 
-# qBittorrent upload resetter
+# qBittorrent Upload Resetter
 
 <img src='https://github.com/MadMan2k/qBittorrent-upload-resetter/blob/main/src/main/resources/img.jpg' alt='img' width='861'/>
 
-qBittorrent upload resetter is a simple Java application designed to reset the upload value in `.fastresume` files used by qBittorrent.
+qBittorrent Upload Resetter is a simple Java application designed to reset the upload value in `.fastresume` files used by qBittorrent.
 
 ## Features
 
@@ -18,19 +18,22 @@ qBittorrent upload resetter is a simple Java application designed to reset the u
 
 ## Usage
 
-Code could be easily compiled by yourself, if you want. For those who don't want to do it you could [download](https://github.com/MadMan2k/qBittorrent-upload-resetter/releases/tag/qBittorrent-upload-resetter-1.0) already compiled ready to use `.jar` file.
+You can compile the code yourself if you wish. Alternatively, you can [download](https://github.com/MadMan2k/qBittorrent-upload-resetter/releases/tag/qBittorrent-upload-resetter-1.0) the pre-compiled ready to use `.jar` file.
 
-Once it downloaded/compiled run following command from your terminal(Mac/Linux) or command line(Windows)
+Once downloaded or compiled, you can run the `.jar` file from any directory. You do not need to place it in the `BT_backup` folder or any specific qBittorrent folder. Simply navigate to the directory containing the `.jar` file using your terminal (Mac/Linux) or command line (Windows). Then run the following command:
 
 ```sh
 java -jar qBittorrent-upload-resetter.jar [options]
 ```
-
+Alternatively, you can run the application from any location by specifying the full `<path>` to the .jar file:
+```sh
+java -jar /full/path/to/qBittorrent-upload-resetter.jar [options]
+```
 ## Options
 
 | Short Option | Long Option   | Description                                                  |
 |--------------|---------------|--------------------------------------------------------------|
-| -p           | --path <path> | Specify the path to the BT_backup folder. If not specified, the default path is used. |
+| -p `<path>`  | --path `<path>`| Specify the path to the BT_backup folder. If not specified, the default path is used. |
 | -s           | --single      | Prompt for confirmation before resetting the upload count for each file. |
 | -h           | --help        | Display the help message.                                    |
 
@@ -39,7 +42,7 @@ java -jar qBittorrent-upload-resetter.jar [options]
 
 The application is configured by default for Windows users.
 
-For Mac/Linux users, you will need to specify the path to the `BT_backup` folder when running the application.
+For Mac/Linux users, you will need to specify the `<path>` to the `BT_backup` folder when running the application.
 
 ## Example
 
@@ -69,7 +72,7 @@ Upload value reset successfully for the following torrents:
 ```
 
 ## Notes
-*   Ensure that qBittorrent is not running while you are modifying the .fastresume files to avoid any conflicts.
+*   Ensure that qBittorrent is not running while you are modifying the `.fastresume` files to avoid any conflicts.
 *   Make a backup of your `BT_backup` folder before running this application to prevent any accidental data loss.
 
 ## License
