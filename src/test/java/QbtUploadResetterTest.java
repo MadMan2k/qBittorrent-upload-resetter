@@ -44,6 +44,16 @@ public class QbtUploadResetterTest {
     }
 
     @Test
+    void testMainWithSingleArgument2() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        String[] args = {"-s"};
+        QbtUploadResetter.main(args);
+        System.setOut(System.out);
+        assertTrue(outContent.toString().contains("Using single file mode"));
+    }
+
+    @Test
     void testMainWithoutArguments() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));

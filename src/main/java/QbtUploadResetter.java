@@ -30,39 +30,9 @@ public class QbtUploadResetter {
     public static List<String> successfulResets = new ArrayList<>();
 
     public static void main(String[] args) {
-        String path = null;
-        boolean singleFileMode = false;
+        String path = parseArguments(args);
+        boolean singleFileMode = isSingleFileMode(args);
 
-        // Parse command-line arguments
-        for (int i = 0; i < args.length; i++) {
-            String arg = args[i];
-            switch (arg) {
-                case "-p":
-                case "--path":
-                    if (i + 1 < args.length) {
-                        path = args[i + 1];
-                        i++; // Skip next argument since it's the path value
-                    } else {
-                        System.err.println("Missing value for -p/--path option");
-                        return;
-                    }
-                    break;
-                case "-s":
-                case "--single":
-                    singleFileMode = true;
-                    System.out.println("Using single file mode");
-                    break;
-                case "-h":
-                case "--help":
-                    printHelp();
-                    return;
-                default:
-                    System.err.println("Unknown option: " + arg);
-                    return;
-            }
-        }
-
-        // Use parsed arguments in your application logic
         if (path != null) {
             System.out.println("Path specified: " + path);
             processFiles(path, singleFileMode);
@@ -71,8 +41,42 @@ public class QbtUploadResetter {
             processFiles(System.getenv("LocalAppData") + "\\qBittorrent\\BT_backup", singleFileMode);
         }
 
-        // Print the list of successfully updated torrents
         printSuccessList();
+    }
+
+    private static String parseArguments(String[] args) {
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+            switch (arg) {
+                case "-p":
+                case "--path":
+                    if (i + 1 < args.length) {
+                        return args[i + 1];
+                    } else {
+                        System.err.println("Missing value for -p/--path option");
+                        return null;
+                    }
+                case "-h":
+                case "--help":
+                    printHelp();
+                    return null;
+                default:
+                    System.err.println("Unknown option: " + arg);
+                    return null;
+            }
+        }
+        return null;
+    }
+
+    private static boolean isSingleFileMode(String[] args) {
+        for (String arg : args) {
+            System.err.println("ARGS: " + arg);
+            if (arg.equals("-s") || arg.equals("--single")) {
+                System.out.println("Using single file mode");
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
