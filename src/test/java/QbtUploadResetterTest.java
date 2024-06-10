@@ -291,7 +291,7 @@ public class QbtUploadResetterTest {
         System.setErr(new PrintStream(errContent));
         String invalidPath = "invalid/path";
         QbtUploadResetter.processFiles(invalidPath, false);
-        String expectedErrorMessage = "Invalid path specified or path is not a directory.";
+        String expectedErrorMessage = "Invalid path specified or path is not a directory: invalid/path";
         assertEquals(expectedErrorMessage, errContent.toString().trim());
         System.setErr(System.err);
     }
@@ -302,7 +302,7 @@ public class QbtUploadResetterTest {
         System.setErr(new PrintStream(errContent));
         String invalidPath = "src/test/resources/invalid.torrent";
         QbtUploadResetter.processFiles(invalidPath, false);
-        String expectedErrorMessage = "Invalid path specified or path is not a directory.";
+        String expectedErrorMessage = "Invalid path specified or path is not a directory: src/test/resources/invalid.torrent";
         assertEquals(expectedErrorMessage, errContent.toString().trim());
         System.setErr(System.err);
     }

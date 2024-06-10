@@ -3,6 +3,7 @@ import com.dampcake.bencode.BencodeException;
 import com.dampcake.bencode.Type;
 
 import javax.xml.bind.DatatypeConverter;
+import javax.xml.bind.annotation.XmlType;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -27,6 +28,7 @@ public class QbtUploadResetter {
     public static final String HEX_FIRST_ARGUMENT = "31343A746F74616C5F75706C6F6164656469"; // "14:total_uploadedi" in hexadecimal
     public static final String HEX_SECOND_ARGUMENT = "65383A747261636B657273"; // "e8:trackers" in hexadecimal
     public static final String HEX_ZERO = "30";
+    private static final String DEFAULT_PATH = System.getenv("LocalAppData") + "\\qBittorrent\\BT_backup";
     public static List<String> successfulResets = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -38,7 +40,7 @@ public class QbtUploadResetter {
             processFiles(path, singleFileMode);
         } else {
             System.out.println("Using default path");
-            processFiles(System.getenv("LocalAppData") + "\\qBittorrent\\BT_backup", singleFileMode);
+            processFiles(DEFAULT_PATH, singleFileMode);
         }
 
         printSuccessList();
@@ -61,7 +63,9 @@ public class QbtUploadResetter {
                     printHelp();
                     return null;
                 default:
-                    System.err.println("Unknown option: " + arg);
+                    if (!arg.equals("--single") && !arg.equals("-s")) {
+                        System.err.println("Unknown option: " + arg);
+                    }
                     return null;
             }
         }
@@ -70,7 +74,6 @@ public class QbtUploadResetter {
 
     private static boolean isSingleFileMode(String[] args) {
         for (String arg : args) {
-            System.err.println("ARGS: " + arg);
             if (arg.equals("-s") || arg.equals("--single")) {
                 System.out.println("Using single file mode");
                 return true;
@@ -88,9 +91,7 @@ public class QbtUploadResetter {
     public static void processFiles(String path, boolean singleFileMode) {
         File folder = new File(path);
         if (!folder.exists() || !folder.isDirectory()) {
-            System.out.println("folder.exists() = " + folder.exists());
-            System.out.println("folder.isDirectory() = " + folder.isDirectory());
-            System.err.println("Invalid path specified or path is not a directory.");
+            System.err.println("Invalid path specified or path is not a directory: " + path);
             return;
         }
 
@@ -149,7 +150,7 @@ public class QbtUploadResetter {
             fis.read(data);
             return DatatypeConverter.printHexBinary(data);
         } catch (IOException e) {
-            System.err.println("Failed to read file: " + file.getPath());
+            System.err.println("Failed to read file: " + file.getPath() + " - " + e.getMessage());
             e.printStackTrace();
         }
         return "";
@@ -216,7 +217,7 @@ public class QbtUploadResetter {
         try {
             return Files.readAllBytes(file.toPath());
         } catch (IOException e) {
-            System.err.println("Failed to read file: " + file.getPath());
+            System.err.println("Failed to read file: " + file.getPath() + " - " + e.getMessage());
             e.printStackTrace();
             return new byte[0];
         }
