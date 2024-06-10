@@ -13,13 +13,13 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * QbtUploadResetter is a tool to reset the upload value for torrents in qBittorrent.
+ * QbtUploadResetter is a tool to reset the uploaded amount for torrents in qBittorrent.
  * It processes .fastresume files found in the BT_backup folder, resetting the
- * total_uploaded value to 0.
+ * total_uploaded amount to 0.
  *
  * Command-line options:
  *  -p, --path <path>   Specify the path to the BT_backup folder.
- *  -s, --single        Prompt for confirmation before resetting the upload count for each file.
+ *  -s, --single        Prompt for confirmation before resetting the uploaded amount for each file.
  *  -h, --help          Display this help message.
  */
 public class QbtUploadResetter {
@@ -101,7 +101,7 @@ public class QbtUploadResetter {
     }
 
     /**
-     * Processes the .fastresume files in the specified path, resetting the upload count for each file.
+     * Processes the .fastresume files in the specified path, resetting the uploaded amount for each file.
      *
      * @param path            The path to the BT_backup folder.
      * @param singleFileMode  Whether to prompt for confirmation before resetting each file.
@@ -126,9 +126,9 @@ public class QbtUploadResetter {
                     }
                     String torrentName = getTorrentName(file.getPath());
                     if (reset) {
-                        String resetHexData = resetUploadValue(hexData);
+                        String resetHexData = resetUploadedAmount(hexData);
                         saveFileWithResetData(resetHexData, file.getPath());
-                        System.out.println("Upload value reset successfully for torrent: " + torrentName);
+                        System.out.println("Uploaded amount reset successfully for torrent: " + torrentName);
                         successfulResets.add(torrentName);
                     } else {
                         System.out.println("Skipping torrent: " + torrentName);
@@ -182,18 +182,18 @@ public class QbtUploadResetter {
      */
     public static boolean promptUserForReset(String fastresumeFilePath) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Reset upload value for torrent: " + getTorrentName(fastresumeFilePath) + "? (y/n): ");
+        System.out.print("Reset uploaded amount for torrent: " + getTorrentName(fastresumeFilePath) + "? (y/n): ");
         String input = scanner.nextLine().trim().toLowerCase();
         return input.equalsIgnoreCase(YES) || input.equalsIgnoreCase(Y);
     }
 
     /**
-     * Resets the upload value in the hex data.
+     * Resets the uploaded amount in the hex data.
      *
      * @param hexData The original hex data.
-     * @return The modified hex data with the upload value reset.
+     * @return The modified hex data with the uploaded amount reset.
      */
-    public static String resetUploadValue(String hexData) {
+    public static String resetUploadedAmount(String hexData) {
         int startFirstArgument = hexData.indexOf(HEX_FIRST_ARGUMENT);
         int startSecondArgument = hexData.indexOf(HEX_SECOND_ARGUMENT);
 
@@ -274,7 +274,7 @@ public class QbtUploadResetter {
         System.out.println("Usage: java QbtUploadResetter [options]");
         System.out.println("Options:");
         System.out.println("  -p, --path <path>   Specify the path to the BT_backup folder.");
-        System.out.println("  -s, --single        Prompt for confirmation before resetting the upload count for each file.");
+        System.out.println("  -s, --single        Prompt for confirmation before resetting the uploaded amount for each file.");
         System.out.println("  -h, --help          Display this help message.");
     }
 
@@ -283,12 +283,12 @@ public class QbtUploadResetter {
      */
     private static void printSuccessList() {
         if (!successfulResets.isEmpty()) {
-            System.out.println("\nUpload value reset successfully for the following torrents:");
+            System.out.println("\nUploaded amount reset successfully for the following torrents:");
             for (int i = 0; i < successfulResets.size(); i++) {
                 System.out.println((i + 1) + ". " + successfulResets.get(i));
             }
         } else {
-            System.out.println("No upload values were reset.");
+            System.out.println("No uploaded amounts were reset.");
         }
     }
 }

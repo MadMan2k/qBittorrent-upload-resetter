@@ -143,34 +143,34 @@ public class QbtUploadResetterTest {
     }
 
     @Test
-    void resetUploadValue_BothArgumentsPresent() {
+    void resetUploadedAmount_BothArgumentsPresent() {
         String hexData = "somePrefix" + QbtUploadResetter.HEX_FIRST_ARGUMENT + "middlePart" + QbtUploadResetter.HEX_SECOND_ARGUMENT + "someSuffix";
         String expectedResult = "somePrefix" + QbtUploadResetter.HEX_FIRST_ARGUMENT + QbtUploadResetter.HEX_ZERO + QbtUploadResetter.HEX_SECOND_ARGUMENT + "someSuffix";
-        assertEquals(expectedResult, QbtUploadResetter.resetUploadValue(hexData));
+        assertEquals(expectedResult, QbtUploadResetter.resetUploadedAmount(hexData));
     }
 
     @Test
-    void resetUploadValue_FirstArgumentMissing() {
+    void resetUploadedAmount_FirstArgumentMissing() {
         String hexData = "somePrefix" + "someSuffix" + QbtUploadResetter.HEX_SECOND_ARGUMENT;
-        assertThrows(IllegalArgumentException.class, () -> QbtUploadResetter.resetUploadValue(hexData));
+        assertThrows(IllegalArgumentException.class, () -> QbtUploadResetter.resetUploadedAmount(hexData));
     }
 
     @Test
-    void resetUploadValue_SecondArgumentMissing() {
+    void resetUploadedAmount_SecondArgumentMissing() {
         String hexData = "somePrefix" + QbtUploadResetter.HEX_FIRST_ARGUMENT + "someSuffix";
-        assertThrows(IllegalArgumentException.class, () -> QbtUploadResetter.resetUploadValue(hexData));
+        assertThrows(IllegalArgumentException.class, () -> QbtUploadResetter.resetUploadedAmount(hexData));
     }
 
     @Test
-    void resetUploadValue_SecondArgumentBeforeFirst() {
+    void resetUploadedAmount_SecondArgumentBeforeFirst() {
         String hexData = "somePrefix" + QbtUploadResetter.HEX_SECOND_ARGUMENT + "middlePart" + QbtUploadResetter.HEX_FIRST_ARGUMENT + "someSuffix";
-        assertThrows(IllegalArgumentException.class, () -> QbtUploadResetter.resetUploadValue(hexData));
+        assertThrows(IllegalArgumentException.class, () -> QbtUploadResetter.resetUploadedAmount(hexData));
     }
 
     @Test
-    void resetUploadValue_EmptyInput() {
+    void resetUploadedAmount_EmptyInput() {
         String hexData = "";
-        assertThrows(IllegalArgumentException.class, () -> QbtUploadResetter.resetUploadValue(hexData));
+        assertThrows(IllegalArgumentException.class, () -> QbtUploadResetter.resetUploadedAmount(hexData));
     }
 
     @Test
@@ -262,7 +262,7 @@ public class QbtUploadResetterTest {
         QbtUploadResetter.processFiles("src/test/resources/testDir", false);
         String output = outContent.toString();
         assertTrue(output.contains("Processing file: bunny.fastresume"));
-        assertTrue(output.contains("Upload value reset successfully for torrent: bbb_sunflower_1080p_30fps_stereo_abl.mp4"));
+        assertTrue(output.contains("Uploaded amount reset successfully for torrent: bbb_sunflower_1080p_30fps_stereo_abl.mp4"));
         final PrintStream originalOut = System.out;
         System.setOut(originalOut);
     }

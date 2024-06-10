@@ -5,11 +5,11 @@
 
 <img src='https://github.com/MadMan2k/qBittorrent-upload-resetter/blob/main/src/main/resources/img.png' alt='img' width='861'/>
 
-qBittorrent Upload Resetter is a simple Java application designed to reset the upload value in `.fastresume` files used by qBittorrent.
+qBittorrent Upload Resetter is a simple Java application designed to reset the uploaded amount in `.fastresume` files used by qBittorrent.
 
 ## Features
 
-- Automatically detects and resets the upload value in `.fastresume` files.
+- Automatically detects and resets the uploaded amount in `.fastresume` files.
 - Option to prompt for confirmation before resetting each file.
 
 ## Prerequisites
@@ -31,11 +31,11 @@ java -jar /full/path/to/qBittorrent-upload-resetter.jar [options]
 ```
 ## Options
 
-| Short Option | Long Option   | Description                                                  |
-|--------------|---------------|--------------------------------------------------------------|
-| -p `<path>`  | --path `<path>`| Specify the path to the BT_backup folder. If not specified, the default path is used. |
-| -s           | --single      | Prompt for confirmation before resetting the upload count for each file. |
-| -h           | --help        | Display the help message.                                    |
+| Short Option | Long Option   | Description                                                                          |
+|--------------|---------------|--------------------------------------------------------------------------------------|
+| -p `<path>`  | --path `<path>`| Specify the path to the BT_backup folder. If not specified, the default path is used.|
+| -s           | --single      | Prompt for confirmation before resetting the uploaded amount for each file.          |
+| -h           | --help        | Display the help message.                                                            |
 
 
 ## Default settings
@@ -46,15 +46,15 @@ For Mac/Linux users, you will need to specify the `<path>` to the `BT_backup` fo
 
 ## Example
 
-To reset the upload counts in the default `BT_backup` folder on a Windows system:
+To reset the uploaded amount in the default `BT_backup` folder on a Windows system:
 ```sh
 java -jar qBittorrent-upload-resetter.jar
 ```
-To reset the upload counts in a custom `BT_backup` folder or on a Mac/Linux system:
+To reset the uploaded amount in a custom `BT_backup` folder or on a Mac/Linux system:
 ```sh
 java -jar qBittorrent-upload-resetter.jar -p /path/to/qBittorrent/BT_backup
 ```
-To reset the upload counts with confirmation for each file:
+To reset the uploaded amount with confirmation for each file:
 ```sh
 java -jar qBittorrent-upload-resetter.jar -s
 ```
@@ -64,10 +64,10 @@ java -jar qBittorrent-upload-resetter.jar -s
 Using single file mode
 Path specified: C:\Users\YourUsername\AppData\Local\qBittorrent\BT_backup
 Processing file: example.fastresume
-Reset upload count for torrent: Example Torrent? (y/n): y
-Upload value reset successfully for torrent: Example Torrent
+Reset uploaded amount for torrent: Example Torrent? (y/n): y
+Uploaded amount reset successfully for torrent: Example Torrent
 
-Upload value reset successfully for the following torrents:
+Uploaded amount reset successfully for the following torrents:
 1. Example Torrent
 ```
 
