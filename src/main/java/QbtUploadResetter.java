@@ -3,7 +3,6 @@ import com.dampcake.bencode.BencodeException;
 import com.dampcake.bencode.Type;
 
 import javax.xml.bind.DatatypeConverter;
-import javax.xml.bind.annotation.XmlType;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -12,7 +11,7 @@ import java.nio.file.Files;
 import java.util.*;
 
 /**
- * QbtUploadResetter is a tool to reset the upload count for torrents in qBittorrent.
+ * QbtUploadResetter is a tool to reset the upload value for torrents in qBittorrent.
  * It processes .fastresume files found in the BT_backup folder, resetting the
  * total_uploaded value to 0.
  *
@@ -29,6 +28,8 @@ public class QbtUploadResetter {
     public static final String HEX_SECOND_ARGUMENT = "65383A747261636B657273"; // "e8:trackers" in hexadecimal
     public static final String HEX_ZERO = "30";
     private static final String DEFAULT_PATH = System.getenv("LocalAppData") + "\\qBittorrent\\BT_backup";
+    private static final String YES = "yes";
+    private static final String Y = "y";
     public static List<String> successfulResets = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -46,6 +47,12 @@ public class QbtUploadResetter {
         printSuccessList();
     }
 
+    /**
+     * Parses command-line arguments to extract the path specified by the user.
+     *
+     * @param args The command-line arguments.
+     * @return The path specified by the user, or null if no valid path is specified or an error occurs.
+     */
     private static String parseArguments(String[] args) {
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
@@ -72,6 +79,12 @@ public class QbtUploadResetter {
         return null;
     }
 
+    /**
+     * Checks if the command-line arguments indicate that single file mode should be used.
+     *
+     * @param args The command-line arguments.
+     * @return true if single file mode is specified, false otherwise.
+     */
     private static boolean isSingleFileMode(String[] args) {
         for (String arg : args) {
             if (arg.equals("-s") || arg.equals("--single")) {
@@ -166,7 +179,7 @@ public class QbtUploadResetter {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Reset upload value for torrent: " + getTorrentName(fastresumeFilePath) + "? (y/n): ");
         String input = scanner.nextLine().trim().toLowerCase();
-        return input.equalsIgnoreCase("yes") || input.equalsIgnoreCase("y");
+        return input.equalsIgnoreCase(YES) || input.equalsIgnoreCase(Y);
     }
 
     /**
