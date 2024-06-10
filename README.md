@@ -3,6 +3,8 @@
 
 # qBittorrent upload resetter
 
+<img src='https://github.com/MadMan2k/qBittorrent-upload-resetter/blob/main/src/main/resources/img.jpg' alt='img' width='861'/>
+
 qBittorrent upload resetter is a simple Java application designed to reset the upload value in `.fastresume` files used by qBittorrent.
 
 ## Features
@@ -16,7 +18,7 @@ qBittorrent upload resetter is a simple Java application designed to reset the u
 
 ## Usage
 
-Code could be easily compiled by yourself, if you want. For those who don't want to do it you could [download](https://github.com/MadMan2k/qBittorrent-upload-reset/blob/main/LICENSE) already compiled ready to use `.jar` file.
+Code could be easily compiled by yourself, if you want. For those who don't want to do it you could [download](https://github.com/MadMan2k/qBittorrent-upload-resetter/releases/tag/qBittorrent-upload-resetter-1.0) already compiled ready to use `.jar` file.
 
 Once it downloaded/compiled run following command from your terminal(Mac/Linux) or command line(Windows)
 
